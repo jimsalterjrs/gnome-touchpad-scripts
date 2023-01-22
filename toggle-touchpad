@@ -1,0 +1,21 @@
+#!/usr/bin/perl
+
+# don't be root
+if ( $> ==0 ) { die "Please don't run this as root.\n"; }
+
+my $state = `gsettings get org.gnome.desktop.peripherals.touchpad send-events`;
+my $newstate;
+
+# strip singlequotes for human readability later
+$state =~ s/'//g;
+
+if ($state =~ /enabled/) {
+	$newstate='disabled';
+} else {
+	$newstate='enabled';
+}
+
+print `gsettings set org.gnome.desktop.peripherals.touchpad send-events $newstate`;
+print "$newstate touchpad.\n";
+
+exit 0;
